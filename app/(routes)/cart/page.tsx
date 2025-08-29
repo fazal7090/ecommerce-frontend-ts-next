@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { Suspense } from "react";
 import Container from "@/components/ui/container";
 import useCart from "@/hooks/use-cart";
 import CartItem from "./components/cart-item";
 import Summary from "./components/summary";
-
 
 const CartPage = () => {
   const cart = useCart();
@@ -22,17 +20,16 @@ const CartPage = () => {
                 <p className="text-neutral-500">No items added to cart</p>
               )}
               <ul>
-              {cart.items.map((item) => (
-  <CartItem
-    key={item.id}
-    data={item}
-  />
-))}
-
-                
+                {cart.items.map((item) => (
+                  <CartItem key={item.id} data={item} />
+                ))}
               </ul>
             </div>
-            <Summary />
+
+            {/* Wrap Summary in Suspense */}
+            <Suspense fallback={<div>Loading summary...</div>}>
+              <Summary />
+            </Suspense>
           </div>
         </div>
       </Container>
